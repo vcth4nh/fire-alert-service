@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "584984852079",
+    "firebase_url": "https://iot-fire-alert-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "iot-fire-alert",
+    "storage_bucket": "iot-fire-alert.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584984852079:android:582aab9f4216f770463f9a",
+        "android_client_info": {
+          "package_name": "org.faclient"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjTH3awmirdIdLQisarCAywqgD0kXfjTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
