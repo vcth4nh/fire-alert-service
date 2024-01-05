@@ -6,24 +6,16 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import android.app.PendingIntent;
-import android.content.pm.PackageManager
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationManagerCompat
-import android.Manifest
-import android.content.ContentResolver
-import android.net.Uri
+import android.app.NotificationManager
+import android.content.Context
+import com.google.firebase.database.FirebaseDatabase
 
 class FireAlertPushNoti : FirebaseMessagingService() {
     private val TAG = "FireAlertPushNoti"
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.d(TAG, "From: ${remoteMessage.from}")
-        remoteMessage.notification?.let {
-            Log.d(TAG, "Message Notification Body: ${it.body}")
-        }
-
         showNotification(
-            remoteMessage.notification?.title.toString(),
-            remoteMessage.notification?.body.toString()
+            remoteMessage.data["title"]!!,
+            remoteMessage.data["body"]!!
         )
     }
 
@@ -40,36 +32,23 @@ class FireAlertPushNoti : FirebaseMessagingService() {
             .setContentTitle(textTitle)
             .setContentText(textContent)
             .setContentIntent(pendingIntent)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setPriority(NotificationManager.IMPORTANCE_HIGH)
             .setFullScreenIntent(pendingIntent, true)
             .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
-            .setSound(
-                Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + applicationContext.packageName + "/" + R.raw.alert)
-            )
 
-        with(NotificationManagerCompat.from(this)) {
-            if (ActivityCompat.checkSelfPermission(
-                    this@FireAlertPushNoti,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                notify(0, builder.build())
-                return
-            }
-            notify(0, builder.build())
-        }
-
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(666, builder.build())
     }
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Log.d(TAG, "Refreshed token: $token")
+
+    }
+
+    private fun regTokenWithUser(token: String) {
+        val db = FirebaseDatabase.getInstance()
+        db.reference
     }
 }

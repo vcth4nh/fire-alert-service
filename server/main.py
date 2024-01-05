@@ -1,7 +1,7 @@
 from firebase_admin.exceptions import FirebaseError
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_session import Session
-from firebase_admin import credentials, auth, initialize_app
+from firebase_admin import credentials, auth, initialize_app, messaging
 
 app = Flask(__name__)
 app.secret_key = "super secret"
@@ -13,35 +13,27 @@ cred = credentials.Certificate('firebase_admin_secret.json')
 firebase = initialize_app(cred)
 
 
-@app.post('/device/alert')
+@app.get('/device/alert')
 def alert():
-    return {'message': 'success'}
+    def get_token(user):
+        return 'f_EuDd4kSsiM7smO1IZHKh:APA91bG3MmQRv5F68hLF-8RpDFEM-XxMJ3eO7-90_HXinGGUaZYOfAWB8EOSh8rFPwoCtIOYnlX3pT-4tY53eDeMyasB0uqlR3heQAtFXSG_9lVabHe2e8qx7h4XuYc2aHQlxQYjj8pw'
 
+    user = request.form.get('user')
+    registration_token = get_token(user)
 
-@app.post('/app/login')
-def app_login():
-    pass
+    message = messaging.Message(
+        data={
+            'title': 'dit me chay roi',
+            'body': 'dit me chay roi\n'
+                    'dia chi: 123 abc\n'
+                    'thoi gian: 12:00 12/12/2021\n'
+        },
+        token=registration_token,
+    )
 
+    response = messaging.send(message)
 
-@app.get('/login')
-def get_login():
-    return render_template('login.html')
-
-
-@app.post('/login')
-def post_login():
-    try:
-        user = auth.get_user_by_email(request.form['email'])
-        if not user.email_verified or user.disabled:
-            raise ValueError('Email not verified or user disabled')
-    except FirebaseError as e:
-        flash(str(e))
-        return redirect(url_for('get_login'))
-    except ValueError as e:
-        flash(str(e))
-        return redirect(url_for('get_login'))
-    session['user'] = user.__dict__
-    return redirect(url_for('get_dashboard'))
+    return {'message': response}
 
 
 @app.get('/register')
@@ -65,13 +57,6 @@ def post_register():
         flash(str(e))
         return redirect(url_for('get_register'))
     return redirect(url_for('get_login'))
-
-
-@app.get('/dashboard')
-def get_dashboard():
-    if 'user' not in session:
-        return redirect(url_for('get_login'))
-    return render_template('dashboard.html', user=session['user']['_data'])
 
 
 if __name__ == '__main__':

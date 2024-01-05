@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "org.faclient"
-    compileSdk = 31
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "org.faclient"
