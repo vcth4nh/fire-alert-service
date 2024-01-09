@@ -8,11 +8,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import com.ncorti.slidetoact.SlideToActView
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class EmergencyStateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_emergency_state)
+
+        //TODO add time and location
 
         val emergencyCallBtn = findViewById<ImageButton>(R.id.emergency_call)
         emergencyCallBtn.setOnClickListener {
@@ -29,10 +34,19 @@ class EmergencyStateActivity : AppCompatActivity() {
                     getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 notificationManager.cancel(1312)
 
-
-
+                setEmergencyOff()
                 finish()
             }
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun setEmergencyOff() {
+        val settingStorage = SettingStorage(application)
+        GlobalScope.launch {
+            settingStorage.stopEmergency()
+            settingStorage.setLocation("")
+            settingStorage.setTime(0)
         }
     }
 }
