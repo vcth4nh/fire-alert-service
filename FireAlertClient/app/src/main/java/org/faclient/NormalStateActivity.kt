@@ -19,7 +19,5 @@ class NormalStateActivity : ComponentActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
-
-        val dbRef = FirebaseDatabase.getInstance().reference
     }
 }

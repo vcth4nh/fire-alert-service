@@ -26,9 +26,13 @@ class MainActivity : AppCompatActivity() {
         val auth = FirebaseAuth.getInstance()
         logFcmToken()
         if (auth.currentUser != null) {
-            startActivity(Intent(this, NormalStateActivity::class.java))
+            val intent = Intent(this, NormalStateActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         } else {
-            startActivity(Intent(this, LoginActivity::class.java))
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
         finish()
     }

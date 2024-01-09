@@ -38,10 +38,13 @@ class LoginActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             val user = mAuth?.currentUser
             if (user != null) {
-                startActivity(Intent(this, NormalStateActivity::class.java))
+                val intent = Intent(this, NormalStateActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
             }
         } else {
             val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
     }

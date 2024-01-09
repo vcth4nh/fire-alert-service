@@ -68,6 +68,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.firebase:firebase-messaging:23.4.0")
     implementation("com.ncorti:slidetoact:0.11.0")
+    implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.17")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

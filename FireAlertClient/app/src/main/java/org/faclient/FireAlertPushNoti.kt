@@ -20,6 +20,7 @@ class FireAlertPushNoti : FirebaseMessagingService() {
     }
 
     private fun showNotification(textTitle: String, textContent: String) {
+//        TODO: add head-up notification when the phone is unlocked
         val intent = Intent(this, EmergencyStateActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
