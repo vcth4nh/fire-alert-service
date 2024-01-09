@@ -1,5 +1,7 @@
 package org.faclient
 
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +25,12 @@ class EmergencyStateActivity : AppCompatActivity() {
         val slider = findViewById<SlideToActView>(R.id.confirm_swipe_btn)
         slider.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
             override fun onSlideComplete(view: SlideToActView) {
+                val notificationManager =
+                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                notificationManager.cancel(1312)
+
+
+
                 finish()
             }
         }
