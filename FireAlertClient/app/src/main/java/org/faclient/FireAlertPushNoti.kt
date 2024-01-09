@@ -20,7 +20,7 @@ class FireAlertPushNoti : FirebaseMessagingService() {
     }
 
     private fun showNotification(textTitle: String, textContent: String) {
-        val intent = Intent(this, LoggedInActivity::class.java).apply {
+        val intent = Intent(this, EmergencyStateActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent: PendingIntent =
@@ -31,14 +31,14 @@ class FireAlertPushNoti : FirebaseMessagingService() {
             .setSmallIcon(R.drawable.icon)
             .setContentTitle(textTitle)
             .setContentText(textContent)
+            .setPriority(NotificationManager.IMPORTANCE_MAX)
             .setContentIntent(pendingIntent)
-            .setPriority(NotificationManager.IMPORTANCE_HIGH)
             .setFullScreenIntent(pendingIntent, true)
-            .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(666, builder.build())
+        notificationManager.notify(1312, builder.build())
     }
 
     override fun onNewToken(token: String) {

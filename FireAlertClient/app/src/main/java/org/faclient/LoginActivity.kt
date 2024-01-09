@@ -9,7 +9,7 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 
-class LoginActivity : ComponentActivity() {
+class LoginActivity : AppCompatActivity() {
     private var mAuth: FirebaseAuth? = null
 
     private val signInLauncher = registerForActivityResult(
@@ -38,11 +38,7 @@ class LoginActivity : ComponentActivity() {
         if (result.resultCode == RESULT_OK) {
             val user = mAuth?.currentUser
             if (user != null) {
-                startActivities(
-                    arrayOf(
-                        Intent(this, LoggedInActivity::class.java),
-                    )
-                )
+                startActivity(Intent(this, NormalStateActivity::class.java))
             }
         } else {
             val intent = Intent(this, LoginActivity::class.java)

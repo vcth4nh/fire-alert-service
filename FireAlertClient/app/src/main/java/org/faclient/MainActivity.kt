@@ -1,5 +1,6 @@
 package org.faclient
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.ContentResolver
@@ -13,28 +14,21 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         createNotificationChannel()
         val auth = FirebaseAuth.getInstance()
         logFcmToken()
         if (auth.currentUser != null) {
-            startActivities(
-                arrayOf(
-                    Intent(this, LoggedInActivity::class.java),
-                )
-            )
+            startActivity(Intent(this, NormalStateActivity::class.java))
         } else {
-            startActivities(
-                arrayOf(
-                    Intent(this, LoginActivity::class.java),
-                )
-            )
+            startActivity(Intent(this, LoginActivity::class.java))
         }
         finish()
     }
@@ -60,9 +54,15 @@ class MainActivity : ComponentActivity() {
                 getString(R.string.channel_name),
                 NotificationManager.IMPORTANCE_HIGH
             )
+            mChannel.description = getString(R.string.channel_description)
+
             mChannel.lightColor = Color.GRAY
             mChannel.enableLights(true)
-            mChannel.description = getString(R.string.channel_description)
+
+            mChannel.enableVibration(true)
+
+            mChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+
             val audioAttributes = AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .setUsage(AudioAttributes.USAGE_NOTIFICATION)
@@ -70,7 +70,7 @@ class MainActivity : ComponentActivity() {
             val soundUri =
                 Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + applicationContext.packageName + "/" + R.raw.alert)
             mChannel.setSound(soundUri, audioAttributes)
-            // Register the channel with the system.
+
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(mChannel)
