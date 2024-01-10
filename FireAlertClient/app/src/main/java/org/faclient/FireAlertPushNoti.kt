@@ -1,22 +1,16 @@
 package org.faclient
 
-import android.content.Intent
-import android.util.Log
-import androidx.core.app.NotificationCompat
-import androidx.lifecycle.lifecycleScope
-import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.firebase.messaging.RemoteMessage
-import android.app.PendingIntent;
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import android.util.Log
+import androidx.core.app.NotificationCompat
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.runBlocking
 
 class FireAlertPushNoti : FirebaseMessagingService() {

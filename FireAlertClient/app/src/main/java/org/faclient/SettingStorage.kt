@@ -1,10 +1,6 @@
-package org.faclient;
+package org.faclient
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.compose.material3.Text
-import androidx.compose.runtime.collectAsState
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -14,8 +10,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
-import org.faclient.SettingStorage.Companion.dataStore
 import java.time.Instant
 
 
