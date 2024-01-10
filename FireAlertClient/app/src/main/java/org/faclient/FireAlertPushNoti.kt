@@ -1,18 +1,23 @@
 package org.faclient
 
-import android.app.Application
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import android.app.PendingIntent;
 import android.app.NotificationManager
+import android.content.ContentResolver
 import android.content.Context
+import android.net.Uri
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class FireAlertPushNoti : FirebaseMessagingService() {
     private val TAG = "FireAlertPushNoti"
@@ -33,6 +38,9 @@ class FireAlertPushNoti : FirebaseMessagingService() {
         val pendingIntent: PendingIntent =
             PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
+        val soundUri =
+            Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + applicationContext.packageName + "/" + R.raw.alert)
+
         val builder = NotificationCompat.Builder(this, getString(R.string.channel_id))
             .setSmallIcon(R.drawable.icon)
             .setContentTitle(title)
@@ -41,6 +49,7 @@ class FireAlertPushNoti : FirebaseMessagingService() {
             .setContentIntent(pendingIntent)
             .setFullScreenIntent(pendingIntent, true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setSound(soundUri)
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -59,10 +68,9 @@ class FireAlertPushNoti : FirebaseMessagingService() {
         db.reference
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     private fun setEmergencyOn(location: String, time: Long) {
         val settingStorage = SettingStorage(application)
-        GlobalScope.launch {
+        runBlocking {
             settingStorage.startEmergency()
             settingStorage.setLocation(location)
             settingStorage.setTime(time)

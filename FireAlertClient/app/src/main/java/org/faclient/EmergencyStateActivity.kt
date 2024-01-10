@@ -4,21 +4,31 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import com.ncorti.slidetoact.SlideToActView
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class EmergencyStateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_emergency_state)
-
-        //TODO add time and location
-
+        setLocationAndTime()
         val emergencyCallBtn = findViewById<ImageButton>(R.id.emergency_call)
         emergencyCallBtn.setOnClickListener {
             val callIntent = Intent(Intent.ACTION_CALL)
@@ -40,13 +50,35 @@ class EmergencyStateActivity : AppCompatActivity() {
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     private fun setEmergencyOff() {
         val settingStorage = SettingStorage(application)
-        GlobalScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             settingStorage.stopEmergency()
             settingStorage.setLocation("")
             settingStorage.setTime(0)
         }
     }
+
+    private fun setLocationAndTime() {
+        val locationText = findViewById<TextView>(R.id.emergency_location)
+        val timeText = findViewById<TextView>(R.id.emergency_time)
+        val settingStorage = SettingStorage(application)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            settingStorage.getLocation.collectLatest {
+                locationText.text = it
+            }
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            settingStorage.getTime.collectLatest { time ->
+                run {
+                    val sdf = SimpleDateFormat("HH:mm:ss MM/dd/yyyy", Locale.US)
+                    val netDate = Date(time * 1000)
+                    val timeStr = sdf.format(netDate)
+                    timeText.text = timeStr
+                }
+            }
+        }
+    }
+
 }

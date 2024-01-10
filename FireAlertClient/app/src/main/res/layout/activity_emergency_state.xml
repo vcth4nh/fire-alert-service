@@ -14,9 +14,10 @@
         android:src="@drawable/fire1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.158" />
+        app:layout_constraintVertical_bias="0.352" />
 
     <com.ncorti.slidetoact.SlideToActView
         android:id="@+id/confirm_swipe_btn"
@@ -29,16 +30,17 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.641"
+        app:layout_constraintVertical_bias="0.717"
         app:outer_color="@color/red"
         app:slider_reversed="true"
         app:text="Swipe to close" />
+
 
     <ImageButton
         android:id="@+id/emergency_call"
         android:layout_width="125dp"
         android:layout_height="145dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="24dp"
         android:background="@null"
         android:contentDescription="Emergency call button"
         android:scaleType="fitCenter"
@@ -48,4 +50,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirm_swipe_btn"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/emergency_time"
+        android:layout_width="281dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="44dp"
+        app:layout_constraintBottom_toTopOf="@+id/emergency_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/emergency_location"
+        android:layout_width="281dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/fire"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

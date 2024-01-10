@@ -47,7 +47,7 @@ class SettingStorage(private val context: Context) {
     }
 
     val getLocation: Flow<String> = context.dataStore.data.map { preferences ->
-        preferences[LOCATION] ?: "No location???"
+        preferences[LOCATION] ?: "No location available"
     }
 
 
@@ -57,7 +57,6 @@ class SettingStorage(private val context: Context) {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     val getTime: Flow<Long> = context.dataStore.data.map { preferences ->
         preferences[TIME] ?: Instant.now().epochSecond
     }
